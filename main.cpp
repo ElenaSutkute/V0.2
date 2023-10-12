@@ -11,14 +11,13 @@ using namespace std;
 struct Studentai{
     string vardas;
     string pavarde;
-    vector<int> pazimys;
+    vector<int> nd;
     int egz;
-    double med;
     double vid;
 };
 
-double vidurkis(mt19937 &generator, uniform_int_distribution<int> &distribution);
-double mediana(mt19937 &generator, uniform_int_distribution<int> &distribution);
+double vidurkis(const vector<int> &vektorius);
+double mediana(const vector<int> &vektorius);
 bool rusiavimas(const Studentai &a, const Studentai &b);
 
 int main()
@@ -27,12 +26,12 @@ int main()
     ofstream Vargsiukai("Vargsiukai.txt");
     ofstream Moksliukai("Moksliukai.txt");
 
-    Failas<<setw(15)<<left<<"Vardas"<<setw(15)<<left<<"Pavarde"
-    << setw(20) << left << "Galutinis(Vid.)" << setw(20) << left << "Galutinis(Med.)" << endl;
+
+
     Vargsiukai<<setw(15)<<left<<"Vardas"<<setw(15)<<left<<"Pavarde"
-    << setw(20) << left << "Galutinis(Vid.)" << setw(20) << left << "Galutinis(Med.)" << endl;
+    << setw(20) << left << "Galutinis(Vid.)" << setw(20) << endl;
     Moksliukai<<setw(15)<<left<<"Vardas"<<setw(15)<<left<<"Pavarde"
-    << setw(20) << left << "Galutinis(Vid.)" << setw(20) << left << "Galutinis(Med.)" << endl;
+    << setw(20) << left << "Galutinis(Vid.)" << setw(20) << endl;
 
 
     const int studentCounts[] = {1000, 10000, 100000, 1000000, 10000000};
@@ -40,9 +39,12 @@ int main()
         string filename = to_string(studentCount) + " studentu.txt";
         auto start = chrono::high_resolution_clock::now();
         Failas.open(filename);
+        Failas << setw(15) << left << "Vardas" << setw(15) << left << "Pavarde";
+        for(int i=1; i<=7; i++){
+            Failas<<setw(5)<<left<<"ND"+to_string(i);
+        }
+        Failas<<setw(5)<<"Egz."<<endl;
 
-        Failas << setw(15) << left << "Vardas" << setw(15) << left << "Pavarde"
-               << setw(20) << left << "Galutinis(Vid.)" << setw(20) << left << "Galutinis(Med.)" << endl;
 
         random_device rd;
         mt19937 generator(rd());
@@ -50,10 +52,16 @@ int main()
 
         for (int i = 1; i <= studentCount; i++) {
             Failas << setw(15) << left << "Vardas" + to_string(i) << setw(15) << left
-                   << "Pavarde" + to_string(i)
-                   << setw(20) << left << round((0.4 * vidurkis(generator, distribution) + 0.6 * distribution(generator)) * 100.0) / 100.0
-                   << setw(20) << left << round((0.4 * mediana(generator, distribution) + 0.6 * distribution(generator)) * 100.0) / 100.0
-                   << endl;
+                << "Pavarde" + to_string(i);
+            int min = 1;
+            int max = 10;
+            for (int j = 0; j < 7; j++) {
+                uniform_int_distribution<int> distribution(min, max);
+                int random_skaicius = distribution(generator);
+                Failas << setw(5) << random_skaicius;
+            }
+            uniform_int_distribution<int> distribution(min, max);
+            Failas << setw(5) << distribution(generator) << endl;
         }
 
         Failas.close();
@@ -61,47 +69,70 @@ int main()
         chrono::duration<double> duration = end - start;
         cout << studentCount << " studentu failas sukurtas per " << duration.count() << " sekundziu" << endl;
     }
+        vector<Studentai> studentai;
 
-    ifstream isFailo("1000 studentu.txt");
-
-    if (!isFailo) {
-    cerr << "Error: Unable to open the file." << endl;
-    return 1;
+    ifstream infile("studentai.txt");
+    if (!infile)
+    {
+        cerr << "Error: Failo atidaryti nepavyko." << endl;
+        terminate();
     }
 
-    vector<Studentai> studentai;
-
-    string line;
-    getline(isFailo, line);
+    string eile;
+    getline(infile, eile);
+    int lineNum = 0;
     auto startRead = chrono::high_resolution_clock::now();
-
-    while (getline(isFailo, line)) {
+    while (getline(infile, eile))
+    {
+        lineNum++;
         Studentai studentas;
-        istringstream iss(line);
+        istringstream iss(eile);
+        iss >> studentas.vardas >> studentas.pavarde;
 
-        if (!(iss >> studentas.vardas >> studentas.pavarde >> studentas.vid >> studentas.med)) {
-            cerr << "Error reading data from the file." << endl;
-            return 1;
+        for (int i = 0; i < 7; i++)
+        {
+            int pazimys;
+            iss >> pazimys;
+
+            if (iss.fail())
+            {
+                cerr << "Error skaitant " << lineNum << " studento pazymius." << endl;
+                break;
+            }
+            if (pazimys == -1)
+            {
+                break;
+            }
+            studentas.nd.push_back(pazimys);
         }
 
-        studentai.push_back(studentas);
+        if (!iss.fail())
+        {
+            iss >> studentas.egz;
+            studentai.push_back(studentas);
+        }
     }
+    infile.close();
 
-    isFailo.close();
+
     auto endRead = chrono::high_resolution_clock::now();
     chrono::duration<double> durationRead = endRead - startRead;
-    cout << "duomenu skaitymas is failo 1000 studentu failo truko " << durationRead.count() << " sekundziu" << endl;
+    cout << "duomenu skaitymas is failo truko " << durationRead.count() << " sekundziu" << endl;
 
     auto startSort = chrono::high_resolution_clock::now();
     sort(studentai.begin(), studentai.end(), rusiavimas);
     auto endSort = chrono::high_resolution_clock::now();
     chrono::duration<double> durationSort = endSort - startSort;
-    cout << "duomenu rusiavimas pagal pavardes ir vardus 1000 studentu faile truko " << durationSort.count() << " sekundziu" << endl;
+    cout << "duomenu rusiavimas pagal pavardes ir vardus truko " << durationSort.count() << " sekundziu" << endl;
 
     vector<Studentai> protingi;
     vector<Studentai> kiti;
 
     auto startFilter = chrono::high_resolution_clock::now();
+
+        for (Studentai& studentas : studentai) {
+        studentas.vid = round((0.4 * vidurkis(studentas.nd) + 0.6 * studentas.egz) * 100.0) / 100.0;
+    }
 
     for (const Studentai& studentas : studentai) {
         if (studentas.vid < 5) {
@@ -113,13 +144,13 @@ int main()
 
     auto endFilter = chrono::high_resolution_clock::now();
     chrono::duration<double> durationFilter = endFilter - startFilter;
-    cout << "duomenu rusiavimas pagal vidurki 1000 studentu faile truko " << durationFilter.count() << " sekundziu" << endl;
+    cout << "duomenu rusiavimas pagal vidurki truko " << durationFilter.count() << " sekundziu" << endl;
 
     auto startWriteVargsiukai = chrono::high_resolution_clock::now();
 
     for (const Studentai& studentas : protingi) {
         Vargsiukai << setw(15) << left << studentas.vardas << setw(15) << left << studentas.pavarde
-            << setw(20) << left << studentas.vid << setw(20) << left << studentas.med << endl;
+            << setw(20) << left << studentas.vid << setw(20) <<  endl;
     }
 
     auto endWriteVargsiukai = chrono::high_resolution_clock::now();
@@ -130,7 +161,7 @@ int main()
 
     for (const Studentai& studentas : kiti) {
         Moksliukai << setw(15) << left << studentas.vardas << setw(15) << left << studentas.pavarde
-            << setw(20) << left << studentas.vid << setw(20) << left << studentas.med << endl;
+            << setw(20) << left << studentas.vid << setw(20) <<  endl;
     }
 
     auto endWriteMoksliukai = chrono::high_resolution_clock::now();
@@ -143,27 +174,18 @@ int main()
     return 0;
 }
 
-double vidurkis(mt19937 &generator, uniform_int_distribution<int> &distribution) {
-    double suma = 0;
-    for (int j = 0; j < 15; j++) {
-        int random_skaicius = distribution(generator);
-        suma += random_skaicius;
+double vidurkis(const vector<int> &vektorius)
+{
+    int kiekis = vektorius.size();
+    int suma = 0;
+    for (int i = 0; i < kiekis; i++)
+    {
+        suma += vektorius[i];
     }
-    return suma / 15.0;
+    return static_cast<double>(suma) / static_cast<double>(kiekis);
 }
 
-double mediana(mt19937 &generator, uniform_int_distribution<int> &distribution) {
-    vector<int> pazymiai;
-    for (int j = 0; j < 15; j++) {
-        int random_skaicius = distribution(generator);
-        pazymiai.push_back(random_skaicius);
-    }
-    sort(pazymiai.begin(), pazymiai.end());
-    if (15 % 2 != 0) {
-        return static_cast<double>(pazymiai[15 / 2]);
-    }
-    return static_cast<double>(pazymiai[15 / 2 - 1] + pazymiai[15 / 2]) / 2.0;
-}
+
 
 bool rusiavimas(const Studentai &a, const Studentai &b)
 {
