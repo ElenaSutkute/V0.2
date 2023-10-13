@@ -6,6 +6,7 @@
 #include <string>
 #include <random>
 #include <chrono>
+
 using namespace std;
 
 struct Studentai{
@@ -34,25 +35,31 @@ int main()
     << setw(20) << left << "Galutinis(Vid.)" << setw(20) << endl;
 
 
-    const int studentCounts[] = {1000, 10000, 100000, 1000000, 10000000};
+   /* const int studentCounts[] = {1000, 10000, 100000, 1000000, 10000000};
+
     for (int studentCount : studentCounts) {
         string filename = to_string(studentCount) + " studentu.txt";
         auto start = chrono::high_resolution_clock::now();
-        Failas.open(filename);
-        Failas << setw(15) << left << "Vardas" << setw(15) << left << "Pavarde";
-        for(int i=1; i<=7; i++){
-            Failas<<setw(5)<<left<<"ND"+to_string(i);
-        }
-        Failas<<setw(5)<<"Egz."<<endl;
+        ofstream Failas(filename);
 
+        if (!Failas.is_open()) {
+            cerr << "Failed to open " << filename << endl;
+            return 1;
+        }
+
+        Failas << setw(15) << left << "Vardas" << setw(15) << left << "Pavarde";
+        for (int i = 1; i <= 7; i++) {
+            Failas << setw(5) << left << "ND" + to_string(i);
+        }
+        Failas << setw(5) << "Egz." << endl;
 
         random_device rd;
-        mt19937 generator(rd());
+        mt19937 generator(rd() + studentCount);
         uniform_int_distribution<int> distribution(1, 10);
 
         for (int i = 1; i <= studentCount; i++) {
             Failas << setw(15) << left << "Vardas" + to_string(i) << setw(15) << left
-                << "Pavarde" + to_string(i);
+            << "Pavarde" + to_string(i);
             int min = 1;
             int max = 10;
             for (int j = 0; j < 7; j++) {
@@ -68,10 +75,12 @@ int main()
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> duration = end - start;
         cout << studentCount << " studentu failas sukurtas per " << duration.count() << " sekundziu" << endl;
-    }
-        vector<Studentai> studentai;
+    }*/
+    vector<Studentai> studentai;
 
-    ifstream infile("studentai.txt");
+    ifstream infile("1000000 studentu.txt");
+
+    cout<<"Skaitymas vyksta is failo su 1 000 000 studentu"<<endl;
     if (!infile)
     {
         cerr << "Error: Failo atidaryti nepavyko." << endl;
@@ -123,7 +132,7 @@ int main()
     sort(studentai.begin(), studentai.end(), rusiavimas);
     auto endSort = chrono::high_resolution_clock::now();
     chrono::duration<double> durationSort = endSort - startSort;
-    cout << "duomenu rusiavimas pagal pavardes ir vardus truko " << durationSort.count() << " sekundziu" << endl;
+    cout << "duomenu rusiavimas pagal pavardes ir vardus funkcija sort truko " << durationSort.count() << " sekundziu" << endl;
 
     vector<Studentai> protingi;
     vector<Studentai> kiti;
