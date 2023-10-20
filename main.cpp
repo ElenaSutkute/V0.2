@@ -22,11 +22,32 @@ int main()
     }
 
     if (failai == "taip") {
+        GeneruotiFailus();
         string kriterijus;
         cout<<"Ar rusiuoti studentus pagal vidurki ar pagal pavardes?"<<endl;
         cin>>kriterijus;
-        GeneruotiFailus();
         for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 48; i++) {
+                cout << "--";
+            }
+            cout << endl;
+            StudentuSkirstymas(kriterijus);
+            for (int i = 0; i < 48; i++) {
+                cout << "--";
+            }
+            cout << endl;
+        }
+    }
+
+    if (failai == "ne"){
+        string kriterijus;
+        cout<<"Ar rusiuoti studentus pagal vidurki ar pagal pavardes?"<<endl;
+        cin>>kriterijus;
+        for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 48; i++) {
+                cout << "--";
+            }
+            cout << endl;
             StudentuSkirstymas(kriterijus);
             for (int i = 0; i < 48; i++) {
                 cout << "--";
