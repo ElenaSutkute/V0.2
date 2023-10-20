@@ -7,3 +7,6 @@
        2.2.2.1. Įvedus taip galite vesti kiek norite studento pažymių, norėdami nutraukti įvedimą parašykite -1; Tuomet reikia įvesti egzamino rezultatą. Rezultatai būtinai turi būtų (0,10] ribose.
        2.2.2.2. Įvedus ne reikia pasirinkti kiek buvo atliktų namų darbų ir tada studento namų darbų ir egzamino rezultatai bus generuojami automatiškai.
 Galutiniame rezultate matysime studentų pavades ir vardus surūšiuotus abeceliškai ir jų galutinį dalyko rezutatą, paskaičiuotą tiek pagal medianą, tiek pagal vidurkį.
+
+
+<img width="542" alt="image" src="https://github.com/ElenaSutkute/V0.2/assets/145843117/1978500e-edeb-4d6a-8097-3e5f3227e4c7">
