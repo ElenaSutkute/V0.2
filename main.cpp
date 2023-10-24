@@ -224,12 +224,11 @@ vector<Duomenys<Container>> ivestiDuomenisRanka()
     for (int studentIndex = 0; studentIndex < zmones; studentIndex++)
     {
         Duomenys<Container> studentas;
-
         cout << "Iveskite varda: ";
         cin >> studentas.vardas;
         cout << "Iveskite pavarde: ";
         cin >> studentas.pavarde;
-
+        cout << "Studento adresas: " << &studentas << endl;
         cout << "Ar norite ivesti savo pazymius? Atsakymas: taip arba ne" << endl;
         try
         {
