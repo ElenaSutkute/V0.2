@@ -4,33 +4,41 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <list>
 #include <iomanip>
 #include <algorithm>
 #include <sstream>
 #include <string>
 #include <random>
 #include <chrono>
+
 using namespace std;
 
+template <typename Container>
 struct Duomenys
 {
     string vardas;
     string pavarde;
-    vector<int> nd;
+    Container nd;
     int egz;
     double vid, med;
 };
 
-
-vector<Duomenys> skaitytiDuomenisIsFailo();
-void spausdintiDuomenis(const vector<Duomenys> &studentai);
-vector<Duomenys> ivestiDuomenisRanka();
-pair<double, double> skaiciuotiGalutini(const Duomenys &studentas);
-void StudentuSkirstymas(const string& sortingCriteria);
+template <typename Container>
+vector<Duomenys<Container>> skaitytiDuomenisIsFailo();
+template <typename Container>
+void spausdintiDuomenis(const vector<Duomenys<Container>> &studentai);
+template <typename Container>
+vector<Duomenys<Container>> ivestiDuomenisRanka();
+template <typename Container>
+void StudentuSkirstymas(const string &sortingCriteria);
+template <typename Container>
 void GeneruotiFailus();
-double vidurkis(const vector<int> &vektorius);
-double mediana(const vector<int> &vektorius);
-bool rusiavimas(const Duomenys &a, const Duomenys &b);
-void SortStudentsByGalutinis(vector<Duomenys>& students);
+template <typename Container>
+double vidurkis(const Container &vektorius);
+template <typename Container>
+bool rusiavimas(const Duomenys<Container> &a, const Duomenys<Container> &b);
+template <typename Container>
+void SortStudentsByGalutinis(vector<Duomenys<Container>> &students);
 
 #endif
