@@ -8,5 +8,16 @@
        2.2.2.2. Įvedus ne reikia pasirinkti kiek buvo atliktų namų darbų ir tada studento namų darbų ir egzamino rezultatai bus generuojami automatiškai.
 Galutiniame rezultate matysime studentų pavades ir vardus surūšiuotus abeceliškai ir jų galutinį dalyko rezutatą, paskaičiuotą tiek pagal medianą, tiek pagal vidurkį.
 
+Vector pagal vidurkį:
+<img width="412" alt="image" src="https://github.com/ElenaSutkute/V0.2/assets/145843117/39123e0d-6365-42bd-98e9-834b40846379">
 
-<img width="542" alt="image" src="https://github.com/ElenaSutkute/V0.2/assets/145843117/1978500e-edeb-4d6a-8097-3e5f3227e4c7">
+Vector pagal pavardę:
+<img width="453" alt="image" src="https://github.com/ElenaSutkute/V0.2/assets/145843117/d97d9eff-7f44-4f94-9b63-ab931a51b2b0">
+
+List pagal vidurkį:
+<img width="386" alt="image" src="https://github.com/ElenaSutkute/V0.2/assets/145843117/9c5fd910-3ee2-4a83-8509-73ffa7e6c45f">
+
+List pagal pavardę:
+<img width="457" alt="image" src="https://github.com/ElenaSutkute/V0.2/assets/145843117/40cd1435-2156-4ce2-995e-ad3b6f2a6241">
+
+
